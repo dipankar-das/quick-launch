@@ -1,0 +1,134 @@
+<apex:page controller="BetterTabClr" showHeader="true" sidebar="false">
+
+<script>
+
+    //load url in existing window
+     function openTab(appName, url){
+         if(window.opener && window.opener.closed==false){
+             window.opener.open(url);
+             
+         } else {
+             openNew(url);
+         }    
+     }
+     
+     //open new tab
+     function openNew(url){
+         var windowWidth = window.outerWidth;
+         var windowHeight = window.outerHeight;
+         var myWindow2 = window.open(url, "", "width=1000, height=" + windowHeight + ", scrollbars=yes");
+         if(window.screenLeft){
+             myWindow2.screenLeft = 225;
+             myWindow2.screenTop = window.screenTop;
+             
+         } else {//FireFox
+             myWindow2.screenX = 225;
+             myWindow2.screenY = window.screenY;
+             
+         }
+         window.opener = myWindow2;
+
+     }
+     
+     //expand/collapse
+     function runAccordion(currentMenuId){
+         var selectedMenu = currentMenuId.id;
+         var selectedMenuContents = 'tabContents'+ selectedMenu;
+         var element = document.getElementById(selectedMenuContents ),
+            style = window.getComputedStyle(element),
+            displayType= style.getPropertyValue('display');
+     
+        if(displayType== "block"){
+           document.getElementById(selectedMenuContents).style.display="none";
+        }else{
+            document.getElementById(selectedMenuContents).style.display="block";
+        }
+    }
+     
+ </script>   
+ 
+ <style>
+ .menus {
+    display : block;
+ }
+ </style>
+ <apex:form id="theForm">
+ <apex:outputPanel layout="none" rendered="{!HasAppFolders == false}">
+    <h1>Click to Setup</h1>
+    <apex:commandButton action="{!createAppFolders}" 
+                        value="Setup"
+                        rendered="{!HasAppFolders == false}" 
+                        rerender="theForm, theTabPanel"/>
+ </apex:outputPanel>
+
+<apex:tabPanel switchType="client" selectedTab="tabApp" id="theTabPanel">
+ <apex:tab label="Apps" name="tabApp" id="tabOne">
+ <div>
+  <apex:variable value="{!0}" var="tabIndex" />
+  <!-- Bookmark Items -->   
+  <apex:repeat value="{!AppFolders}" var="folder">
+      <div style="padding-top: 10px; clear: both;" onclick="runAccordion(this);" id="{!tabIndex}">
+        <div style="float: left; padding-left: 4px;">
+            <img src="{!folder.Logo__c}" height="20" style="padding-right: 4px;"/>
+        </div>
+        <div style="clear: both; padding-left: 2px 2px 4px 4px; font-weight: bold;">
+            {!folder.Label__c}
+        </div>
+      </div>
+      <div style="padding-left: 4px; padding-top: 4px;" id="tabContents{!tabIndex}" class="menus" >
+          <apex:repeat value="{!folder.Items__r}" var="tab">
+              <div style="float: left; width: 150px; height: 40px;"><span align="right"><img src="{!tab.IconUrl__c}" height="20"/></span>
+              <span><a href="#" onclick="openTab('{!folder.Label__c}', '{!tab.TargetUrl__c}');">{!tab.Label__c}</a></span>
+              </div>
+          </apex:repeat>
+      </div>
+      <apex:variable value="{!tabIndex+1}" var="tabIndex" />
+  </apex:repeat>
+ </div>
+ </apex:tab>
+ <!-- Recent Items -->
+ <apex:tab label="Recent" name="tabRecent" id="tabTwo">
+ <div>
+     <apex:repeat value="{!RecentObjects}" var="recent">
+       <div style="padding-top: 10px; clear: both;">
+        <div style="clear: both; padding-left: 2px 2px 4px 4px; font-weight: bold;">
+            <span><a href="#" onclick="openTab('{!recent.Type}', '/{!recent.Id}');">{!recent.Name}</a></span>
+            <span style="font-size:8px;padding-left: 2px;">({!recent.Type})</span>
+        </div>
+      </div>
+     </apex:repeat>
+ </div>    
+ </apex:tab>
+ <!-- App Tabs saved in Folder/Item object-->
+ <apex:tab label="Bookmarks" name="tabBookmark" id="tabThree">
+ <apex:variable value="{!0}" var="tabIndex2" /> 
+ <div>
+ <apex:commandButton action="{!addRecent}" value="Add Recent"/> 
+ <apex:commandButton action="{!addRecent}" value="Add New"/> 
+ <apex:commandButton action="{!addRecent}" onclick="openTab('bookmarks', '/apex/BetterSide3'); return false;" value="Settings"/> 
+ 
+     <apex:repeat value="{!BookmarkFolders}" var="folder">
+        <div style="padding-top: 10px; clear: both;" onclick="runAccordion(this);" id="{!tabIndex2}">
+            <div style="float: left; padding-left: 4px;">
+                <img src="{!folder.Logo__c}" height="20" style="padding-right: 4px;"/>
+            </div>
+            <div style="clear: both; padding-left: 2px 2px 4px 4px; font-weight: bold;">
+                {!folder.Label__c}
+            </div>
+        </div>
+        <div style="padding-left: 4px; padding-top: 4px;" id="tabContents{!tabIndex2}" class="menus" >
+              <apex:repeat value="{!folder.Items__r}" var="tab">
+                  <div style="float: left; width: 150px; height: 40px;"><span align="right"><img src="{!tab.IconUrl__c}" height="20"/></span>
+                  <span><a href="#" onclick="openTab('{!folder.Label__c}', '{!tab.TargetUrl__c}');">{!tab.Label__c}</a></span>
+                  </div>
+              </apex:repeat>
+        </div>
+        <apex:variable value="{!tabIndex2+1}" var="tabIndex2" />
+     </apex:repeat>
+ </div>    
+ </apex:tab>
+ </apex:tabPanel>
+  
+  </apex:form>
+   
+</apex:page>

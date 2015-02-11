@@ -1,0 +1,118 @@
+<apex:page controller="QuickLaunchManagerClr" showHeader="false" sidebar="false">
+
+<!-- jQuery CSS -->
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/themes/smoothness/jquery-ui.css" />
+<!-- Twitter Bootstrap  CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css"/>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap-theme.min.css"/>
+<!-- ui-grid css -->
+<link rel="stylesheet" href="{!URLFOR($Resource.ang, 'lib/ui-grid.css')}"/>
+<!-- QL css -->
+<link rel="stylesheet" href="{!URLFOR($Resource.ang, 'css/launcher-main.css')}"/>
+
+<!-- jQuery JavaScript -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+<!-- Twitter Bootstrap JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
+<!-- Libraries -->
+<apex:includeScript value="{!URLFOR($Resource.ang, 'lib/angular.js')}"/>
+<apex:includeScript value="{!URLFOR($Resource.ang, 'lib/angular-route.js')}"/>
+<apex:includeScript value="{!URLFOR($Resource.ang, 'lib/ui-grid.js')}"/>
+<apex:includeScript value="{!URLFOR($Resource.ang, 'lib/ui-bootstrap-tpls-0.12.0.min.js')}"/>
+
+
+<!-- Quick Launcher JavaScript files -->    
+<apex:includeScript value="{!URLFOR($Resource.ang, 'mainApp.js')}"/>
+<apex:includeScript value="{!URLFOR($Resource.ang, 'directives/dragndrop.js')}"/>
+<apex:includeScript value="{!URLFOR($Resource.ang, 'services/tabService.js')}"/>
+<apex:includeScript value="{!URLFOR($Resource.ang, 'services/folderService.js')}"/>
+<apex:includeScript value="{!URLFOR($Resource.ang, 'controllers/tabController.js')}"/>
+<apex:includeScript value="{!URLFOR($Resource.ang, 'controllers/folderController.js')}"/>
+<apex:includeScript value="{!URLFOR($Resource.ang, 'controllers/editFolderController.js')}"/>
+        
+<script>
+    var j$ = jQuery.noConflict();
+    j$.QL = {};
+    
+    j$.QL.Remote = {};
+    j$.QL.Remote.getFolderWithItems = '{!$RemoteAction.QuickLaunchManagerClr.getFolderWithItems}';
+    j$.QL.Remote.saveItemSequence = '{!$RemoteAction.QuickLaunchManagerClr.saveItemSequence}';
+    
+    j$.QL.Remote.getFolders = '{!$RemoteAction.QuickLaunchManagerClr.getFolders}';
+    j$.QL.Remote.saveFolderSequence = '{!$RemoteAction.QuickLaunchManagerClr.saveFolderSequence}';
+    j$.QL.Remote.saveFolder = '{!$RemoteAction.QuickLaunchManagerClr.saveFolder}';
+    j$.QL.Remote.deleteFolder = '{!$RemoteAction.QuickLaunchManagerClr.deleteFolder}';
+    
+    var PageService = function () {
+        this.editFolderTemplate = "{!URLFOR($Resource.ang, 'views/editfolder.html')}";
+        
+    };
+    
+    angular.module('mainApp').service('PageService', PageService);
+
+    angular.module('mainApp').constant('Pages', {
+        tabTemplate: "{!URLFOR($Resource.ang, 'views/tabs.html')}",
+        bookmarkTemplate: "{!URLFOR($Resource.ang, 'views/bookmarks.html')}",
+        folderListTemplate: "{!URLFOR($Resource.ang, 'views/folders.html')}",
+        editFolderTemplate: "{!URLFOR($Resource.ang, 'views/editfolder.html')}"
+    });
+    
+    
+    //configure routing
+	angular.module('mainApp').config(['$routeProvider', 'Pages',
+		function($routeProvider, Pages) { 
+		  $routeProvider.
+		  	when('/items/:folderType', {
+		    	templateUrl: Pages.tabTemplate,
+		      	controller: 'TabController'
+		  	}).
+		  	when('/bookmarks/:folderType', {
+		    	templateUrl: Pages.bookmarkTemplate,
+				controller: 'TabController'
+		  	}).
+		  	when('/folders/:folderType', {
+		    	templateUrl: Pages.folderListTemplate,
+				controller: 'FolderController'
+		  	}).
+	        otherwise({
+	        	redirectTo: '/tabs/App'
+	        });
+	}]);
+    
+</script>   
+
+<!-- 
+UI grid instead of jqGrid
+https://github.com/angular-ui/ng-grid/
+ -->
+
+<body data-ng-app="mainApp">
+  <div data-ng-controller="MainController">
+        <div class="container">
+          <div class="col-md-1">
+          </div>
+          <div class="col-md-2">
+            <a href="#/folders/App">App Folders</a>
+          </div>
+          <div class="col-md-2">
+            <a href="#/items/App">App Tabs</a>
+          </div>
+          <div class="col-md-2">
+            <a href="#/folders/Bookmark">Bookmark Folders</a>
+          </div>
+          <div class="col-md-2">
+            <a href="#/items/Bookmark">Bookmarks</a>
+          </div>
+          <div class="col-md-2">
+            <a href="#/generalsettings">General Settings</a>
+          </div>
+          <div class="col-md-1">
+          </div>
+        </div>
+        <hr style="margin: 10px;"/> 
+        <div class="data-ng-view" style="min-height: 400px;"></div>
+    </div>
+    
+</body>    
+</apex:page>
