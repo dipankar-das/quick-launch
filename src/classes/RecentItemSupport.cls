@@ -27,7 +27,7 @@ public abstract with sharing class RecentItemSupport {
         }
 
 
-        List<RecentlyViewed> recentItems = [SELECT Id, Name, type, IsActive, LastViewedDate 
+        List<RecentlyViewed> recentItems = [SELECT Id, Name, Type, IsActive, LastViewedDate 
                                                 FROM RecentlyViewed 
                                                 WHERE Id IN :readIds                
                                                 //ORDER BY Type, LastViewedDate];

@@ -1,0 +1,30 @@
+<div data-modal="showModal" data-close="cancel()">
+    <div class="modal-header">
+        <h4>Edit Bookmark</h4>
+    </div>
+    <div class="modal-body">
+		<div data-ng-hide="editMode == delete" class="container">
+		   <div class="row">
+			   <div class="col-md-4">Label</div>
+			   <div class="col-md-8"><input data-ng-model="item.Label__c"></div>
+		   </div>
+		   <div class="row">
+			   <div class="col-md-4">Target URL</div>
+			   <div class="col-md-8"><input data-ng-model="item.TargetUrl__c"></div>
+		   </div>
+		   <div class="row">
+			   <div class="col-md-4">Type</div>
+			   <div class="col-md-8">{{ item.Type__c }}</div>
+		   </div>
+		   <div class="row">
+			   <div class="col-md-4">Highlight</div>
+			   <div class="col-md-8"><input type="checkbox" data-ng-model="item.IsHighlight__c"></div>
+		   </div>
+		</div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-success" data-ng-click="ok()">Save</button>
+      <button class="btn" data-ng-click="cancel()">Cancel</button>
+      <button class="btn" data-ng-click="delete()">Delete</button>
+    </div>
+</div>

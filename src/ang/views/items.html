@@ -1,0 +1,26 @@
+<div class="col-md-12">
+   <div data-ng-repeat="folder in folderWithItems">
+      <div id="{{ folder.Id }}" style="overflow: auto; width: 100%;" data-type="folder">
+          <div style="padding-top: 10px; clear: both;" data-ng-click="toggleTab(folder.Id)" id="{{ folder.Label__c }}">
+                <div style="float: left; padding-left: 4px;">
+                	<img src="{{ folder.Logo__c }}" height="20" style="padding-right: 4px;"/>
+                </div>
+                <div style="clear: both; padding-left: 2px 2px 4px 4px; font-weight: bold;">
+                	{{ folder.Label__c }}
+                </div>
+          </div>
+      
+          <div style="padding-left: 4px; padding-top: 4px;" id="ContentsOf-{{ folder.Id }}" class="menus" data-ng-show="isShowTab(folder.Id);" >
+              <div data-ng-repeat="tab in folder.Items__r">
+                  <div style="float: left; width: 150px; height: 40px;" id="{{ tab.Id }}" data-type="item" data-draggable data-droppable >
+                  	<span align="right"><img src="{{ tab.IconUrl__c }}"" height="20"/></span>
+                  	<span><a data-ng-click="editItem($parent.$index, $index);">{{ tab.Label__c }}</a></span>
+                  </div>
+              </div>
+              <div style="float: left; width: 150px; height: 40px;" id="0:{{ folder.Id }}" data-type="item" data-draggable data-droppable >
+              	<div style="display: none">Empty Cell</div>
+              </div>
+          </div>
+     </div>
+   </div>
+</div> 

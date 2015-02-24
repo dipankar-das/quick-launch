@@ -1,0 +1,44 @@
+.container {
+   width: 100%;
+}
+
+a {
+    cursor: pointer;
+}
+
+.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+ 
+.sortable-list-item {
+	height: 40px;
+    width: 150px;
+ 
+}
+
+.sortable-placeholder {
+	height: 38px;
+    width: 146px;
+    border : 1px dotted #19355E;
+	background-color : #C2F0FF;
+}
+
+.drag-item {
+  min-height: 15px;
+  min-width: 150px;
+  background: blue;
+  color: white;
+  border: 1px solid red;
+  padding: 4px;
+  margin: 4px;
+  clear:left;
+  float:left;
+}
+.drag {
+  opacity: 0.6;
+  color: white;
+  background: green;
+}
+.over {
+  background: red;
+}
+
+ 

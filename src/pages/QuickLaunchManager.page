@@ -25,11 +25,12 @@
 <!-- Quick Launcher JavaScript files -->    
 <apex:includeScript value="{!URLFOR($Resource.ang, 'mainApp.js')}"/>
 <apex:includeScript value="{!URLFOR($Resource.ang, 'directives/dragndrop.js')}"/>
-<apex:includeScript value="{!URLFOR($Resource.ang, 'services/tabService.js')}"/>
+<apex:includeScript value="{!URLFOR($Resource.ang, 'services/itemService.js')}"/>
 <apex:includeScript value="{!URLFOR($Resource.ang, 'services/folderService.js')}"/>
-<apex:includeScript value="{!URLFOR($Resource.ang, 'controllers/tabController.js')}"/>
+<apex:includeScript value="{!URLFOR($Resource.ang, 'controllers/itemController.js')}"/>
 <apex:includeScript value="{!URLFOR($Resource.ang, 'controllers/folderController.js')}"/>
 <apex:includeScript value="{!URLFOR($Resource.ang, 'controllers/editFolderController.js')}"/>
+<apex:includeScript value="{!URLFOR($Resource.ang, 'controllers/editItemController.js')}"/>
         
 <script>
     var j$ = jQuery.noConflict();
@@ -46,39 +47,36 @@
     
     var PageService = function () {
         this.editFolderTemplate = "{!URLFOR($Resource.ang, 'views/editfolder.html')}";
-        
+        this.editItemTemplate = "{!URLFOR($Resource.ang, 'views/edititem.html')}";
     };
     
     angular.module('mainApp').service('PageService', PageService);
 
     angular.module('mainApp').constant('Pages', {
-        tabTemplate: "{!URLFOR($Resource.ang, 'views/tabs.html')}",
+        itemTemplate: "{!URLFOR($Resource.ang, 'views/items.html')}",
         bookmarkTemplate: "{!URLFOR($Resource.ang, 'views/bookmarks.html')}",
         folderListTemplate: "{!URLFOR($Resource.ang, 'views/folders.html')}",
-        editFolderTemplate: "{!URLFOR($Resource.ang, 'views/editfolder.html')}"
+        editFolderTemplate: "{!URLFOR($Resource.ang, 'views/editfolder.html')}",
+        editItemTemplate: "{!URLFOR($Resource.ang, 'views/edititem.html')}"
     });
     
     
     //configure routing
-	angular.module('mainApp').config(['$routeProvider', 'Pages',
-		function($routeProvider, Pages) { 
-		  $routeProvider.
-		  	when('/items/:folderType', {
-		    	templateUrl: Pages.tabTemplate,
-		      	controller: 'TabController'
-		  	}).
-		  	when('/bookmarks/:folderType', {
-		    	templateUrl: Pages.bookmarkTemplate,
-				controller: 'TabController'
-		  	}).
-		  	when('/folders/:folderType', {
-		    	templateUrl: Pages.folderListTemplate,
-				controller: 'FolderController'
-		  	}).
-	        otherwise({
-	        	redirectTo: '/tabs/App'
-	        });
-	}]);
+    angular.module('mainApp').config(['$routeProvider', 'Pages',
+        function($routeProvider, Pages) { 
+          $routeProvider.
+            when('/items/:folderType', {
+                templateUrl: Pages.itemTemplate,
+                controller: 'ItemController'
+            }).
+            when('/folders/:folderType', {
+                templateUrl: Pages.folderListTemplate,
+                controller: 'FolderController'
+            }).
+            otherwise({
+                redirectTo: '/items/App'
+            });
+    }]);
     
 </script>   
 
@@ -93,10 +91,10 @@ https://github.com/angular-ui/ng-grid/
           <div class="col-md-1">
           </div>
           <div class="col-md-2">
-            <a href="#/folders/App">App Folders</a>
+            <a href="#/folders/App">Apps</a>
           </div>
           <div class="col-md-2">
-            <a href="#/items/App">App Tabs</a>
+            <a href="#/items/App">Tabs</a>
           </div>
           <div class="col-md-2">
             <a href="#/folders/Bookmark">Bookmark Folders</a>

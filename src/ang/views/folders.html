@@ -1,0 +1,32 @@
+<div class="col-md-12">
+   <div data-ng-repeat="folder in folders">
+     <div class="row">
+   	  <div class="col-md-10">
+      	<div id="{{ folder.Id }}" style="overflow: auto; width: 100%;" data-type="folder" data-draggable data-droppable>
+          <div style="padding-top: 10px; clear: both;" id="{{ folder.Label__c }}">
+                <div style="float: left; padding-left: 4px; min-width: 80px;">
+                	<img src="{{ folder.Logo__c }}" height="20" style="padding-right: 4px;"/>
+                </div>
+                <div style="padding-left: 2px 2px 4px 4px; font-weight: bold;">
+                	<span data-ng-click="editFolder($index);">{{ folder.Label__c }}</span>
+                </div>
+          </div>
+        </div>
+     </div>   
+     <div class="col-md-1">
+     	<a data-ng-click="editFolder($index);">Edit</a>
+     </div>
+     <div class="col-md-1">
+     	<a data-ng-click="deleteFolder($index);">Delete</a>     
+     </div>
+    </div> 
+   </div>
+   <div class="row">
+   	  <div class="col-md-10">
+   	  </div>
+   	  <div class="col-md-2">
+   	  	<button data-ng-click="newFolder();">Add New Folder</button>
+   	  </div>
+   </div>	  
+   	  
+</div>

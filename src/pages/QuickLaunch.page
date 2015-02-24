@@ -1,11 +1,26 @@
 <apex:page controller="BetterTabClr" showHeader="true" sidebar="false">
 
+
+<!-- Twitter Bootstrap  CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css"/>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap-theme.min.css"/>
+
+<!-- jQuery JavaScript -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script> 
+ <script>var jq$ = jQuery.noConflict();</script>
+<!-- Twitter Bootstrap JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
 <script>
 
     //load url in existing window
      function openTab(appName, url){
          if(window.opener && window.opener.closed==false){
-             window.opener.open(url);
+             try {
+                 window.opener.open(url);
+             } catch (error) {
+                 openNew(url);
+             }
              
          } else {
              openNew(url);
@@ -45,7 +60,14 @@
         }
     }
      
- </script>   
+ </script> 
+ 
+ <script>
+    function popupModal(){
+    jq$('#myModal').modal();
+    return false;
+    }
+</script>  
  
  <style>
  .menus {
@@ -89,6 +111,11 @@
  <!-- Recent Items -->
  <apex:tab label="Recent" name="tabRecent" id="tabTwo">
  <div>
+ <span>Sort By:</span>
+ <apex:commandButton value="Time"/> 
+ <apex:commandButton value="Type"/> 
+ <apex:commandButton value="Name"/> 
+ 
      <apex:repeat value="{!RecentObjects}" var="recent">
        <div style="padding-top: 10px; clear: both;">
         <div style="clear: both; padding-left: 2px 2px 4px 4px; font-weight: bold;">
@@ -104,7 +131,7 @@
  <apex:variable value="{!0}" var="tabIndex2" /> 
  <div>
  <apex:commandButton action="{!addRecent}" value="Add Recent"/> 
- <apex:commandButton action="{!addRecent}" value="Add New"/> 
+ <apex:commandButton action="{!addRecent}" value="Add New" onclick="return popupModal()"/> 
  <apex:commandButton action="{!addRecent}" onclick="openTab('bookmarks', '/apex/BetterSide3'); return false;" value="Settings"/> 
  
      <apex:repeat value="{!BookmarkFolders}" var="folder">
@@ -130,5 +157,51 @@
  </apex:tabPanel>
   
   </apex:form>
-   
+
+   <!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" 
+   aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" 
+               data-dismiss="modal" aria-hidden="true">
+                  &times;
+            </button>
+            <h4 class="modal-title" id="myModalLabel">
+               Add Bookmark
+            </h4>
+         </div>
+         <div class="modal-body">
+         <form class="form-horizontal">
+            <fieldset>
+            <div class="form-group">
+                  <label for="inputEmail" class="col-lg-3 control-label">Bookmark Name </label>
+                  <div class="col-lg-8">
+                    <input type="text" class="form-control"></input>
+                  </div>
+            </div>
+            <div class="form-group">
+                  <label for="inputEmail" class="col-lg-3 control-label">Bookmark URL </label>
+                  <div class="col-lg-8">
+                    <input type="text" class="form-control"></input>
+                  </div>
+            </div>
+            </fieldset>
+        </form>
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-default" 
+               data-dismiss="modal">Close
+            </button>
+            <button type="button" class="btn btn-primary">
+               Save
+            </button>
+         </div>
+         
+      </div><!-- /.modal-content -->
+</div>
+</div><!-- /.modal -->
+
+
 </apex:page>

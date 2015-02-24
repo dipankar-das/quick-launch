@@ -1,0 +1,39 @@
+<div data-modal="showModal" data-close="cancel()">
+    <div class="modal-header">
+        <h4>Edit Folder</h4>
+    </div>
+    <div class="modal-body">
+		<div data-ng-hide="editMode == delete" class="container">
+		   <div class="row">
+			   <div class="col-md-4">Label</div>
+			   <div class="col-md-8"><input data-ng-model="folder.Label__c"></div>
+		   </div>
+		   <div class="row">
+			   <div class="col-md-4">Background Style</div>
+			   <div class="col-md-8"><input data-ng-model="folder.Background__c"></div>
+		   </div>
+		   <div class="row">
+			   <div class="col-md-4">Expanded</div>
+			   <div class="col-md-8"><input type="checkbox" data-ng-model="folder.Expanded__c"></div>
+		   </div>
+		   <div class="row">
+			   <div class="col-md-4">Hide</div>
+			   <div class="col-md-8"><input type="checkbox" data-ng-model="folder.Hide__c"></div>
+		   </div>
+		</div>
+		<div data-ng-show="editMode == delete" class="container">
+		   <div class="row">
+			   Are you sure you want to delete the folder {{ folder.Label__c }}? Press OK to confirm delete. 
+		   </div>
+		</div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-success" data-ng-click="ok()">Save</button>
+      <button class="btn" data-ng-click="cancel()">Cancel</button>
+    </div>
+</div>
+ 
+<!-- 
+http://adamalbrecht.com/2013/12/12/creating-a-simple-modal-dialog-directive-in-angular-js/
+Modal dialog
+-->
